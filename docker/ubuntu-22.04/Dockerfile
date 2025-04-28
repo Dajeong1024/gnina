@@ -13,7 +13,7 @@ RUN apt-get update -y && apt-get install git-all -y curl && apt-get update -y
 RUN pip3 install cmake scikit-image pyquaternion google-api-python-client six
 RUN pip3 install torch torchvision torchaudio
 
-RUN git clone https://github.com/openbabel/openbabel.git && cd openbabel &&  git checkout openbabel-3-1-1 && mkdir build && cd build && cmake -DWITH_MAEPARSER=OFF -DWITH_COORDGEN=OFF -DPYTHON_BINDINGS=ON -DRUN_SWIG=ON .. && make -j4 && make install
+RUN git clone https://github.com/openbabel/openbabel.git && cd openbabel && mkdir build && cd build && cmake -DWITH_MAEPARSER=OFF -DWITH_COORDGEN=OFF -DPYTHON_BINDINGS=ON -DRUN_SWIG=ON .. && make -j4 && make install
 
 ADD "https://github.com/gnina/gnina/commits?per_page=1" latest_commit
 
