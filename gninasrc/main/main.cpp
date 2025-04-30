@@ -697,9 +697,14 @@ struct writer_job {
 };
 
 template <typename T> struct job_queue {
-  job_queue() : jobs(0){};
+  job_queue(unsigned ms=0) : max_size(ms), jobs(0){};
 
   void push(T &job) {
+    int cnt = has_work.value();
+    while(max_size > 0 && cnt > max_size) {
+      boost::thread::yield();
+      cnt = has_work.value();
+    }
     jobs.push(job);
     has_work.signal();
   }
@@ -719,6 +724,7 @@ template <typename T> struct job_queue {
       has_work.signal();
   }
 
+  unsigned max_size = 0;
   sem has_work;
   boost::lockfree::queue<T> jobs;
 };
@@ -1415,15 +1421,15 @@ Thank you!\n";
       log << "\n";
     }
 
-    job_queue<worker_job> wrkq;
-    job_queue<writer_job> writerq;
     int nligs = 0;
     size_t nthreads = settings.cpu;
     global_state gs(&settings, prec, &minparms, &wt, &user_grid, &log, &atomoutfile, cnnopts);
     boost::thread_group worker_threads;
     boost::timer::cpu_timer time;
     std::shared_ptr<DLScorer> dl_scorer;
-
+    job_queue<worker_job> wrkq(nthreads*2);
+    job_queue<writer_job> writerq;
+    
     if (torchgpu)
       dl_scorer = std::make_shared<CNNTorchScorer<true>>(cnnopts, &log);
     else

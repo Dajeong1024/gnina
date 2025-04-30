@@ -6,6 +6,7 @@ struct sem {
 
     void wait();
     void signal();
+    int value();
 
   private:
     sem_t pthread_sem;
@@ -29,4 +30,10 @@ void sem::signal() {
   int ret = sem_post(&pthread_sem);
   // We don't expect to overflow the signal count.
   assert(ret == 0);
+}
+
+int sem::value() {
+  int ret = 0;
+  sem_getvalue(&pthread_sem, &ret);
+  return ret;
 }
