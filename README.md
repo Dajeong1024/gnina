@@ -384,9 +384,10 @@ Misc (optional):
   -q [ --quiet ]                     Suppress output messages
   --addH arg                         automatically add hydrogens in ligands (on
                                      by default)
-  --stripH arg                       remove hydrogens from molecule _after_ 
-                                     performing atom typing for efficiency (off
-                                     by default)
+  --stripH arg                       remove polar hydrogens from molecule 
+                                     _after_ performing atom typing for 
+                                     efficiency (off by default - nonpolar are 
+                                     always removed)
   --device arg (=0)                  GPU device to use
   --no_gpu                           Disable GPU acceleration, even if 
                                      available.
@@ -398,7 +399,6 @@ Information (optional):
   --help                             display usage summary
   --help_hidden                      display usage summary with hidden options
   --version                          display program version
-
 ```
 
 CNN Scoring
