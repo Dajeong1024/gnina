@@ -13,13 +13,30 @@ Citation
 ========
 If you find gnina useful, please cite our paper(s):  
 
-**GNINA 1.0: Molecular docking with deep learning** (Primary application citation)  
+
+**GNINA 1.3: the next increment in molecular docking with deep learning** (Primary application citation)  
+A McNutt, Y Li, R Meli, R Aggarwal, DR Koes. *J. Cheminformatics*, 2025  
+[link](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-025-00973-x) [PubMed](https://pmc.ncbi.nlm.nih.gov/articles/PMC11874439/)
+
+**GNINA 1.0: Molecular docking with deep learning** (Primary application citation, previous version)  
 A McNutt, P Francoeur, R Aggarwal, T Masuda, R Meli, M Ragoza, J Sunseri, DR Koes. *J. Cheminformatics*, 2021  
 [link](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-021-00522-2) [PubMed](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8191141/) [ChemRxiv](https://chemrxiv.org/articles/preprint/GNINA_1_0_Molecular_Docking_with_Deep_Learning/13578140)
 
 **Protein–Ligand Scoring with Convolutional Neural Networks**  (Primary methods citation)  
 M Ragoza, J Hochuli, E Idrobo, J Sunseri, DR Koes. *J. Chem. Inf. Model*, 2017  
 [link](http://pubs.acs.org/doi/full/10.1021/acs.jcim.6b00740) [PubMed](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5479431/) [arXiv](https://arxiv.org/abs/1612.02751)  
+
+**Virtual Screening with Gnina 1.0** (Virtual screening citation)
+J Sunseri, DR Koes D. *Molecules*, 2021
+[link](https://www.mdpi.com/1420-3049/26/23/7369) [Preprints](https://www.preprints.org/manuscript/202111.0329/v1)
+
+**CACHE Challenge# 1: Docking with GNINA Is All You Need** (Example application)
+I Dunn, S Pirhadi, Y Wang, S Ravindran, C Concepcion, DR Koes. *J. Chem. Inf. Model*, 2024 
+[link](https://pubs.acs.org/doi/full/10.1021/acs.jcim.4c01429) [PubMed](https://pubmed.ncbi.nlm.nih.gov/39654129/)
+
+**Three-Dimensional Convolutional Neural Networks and a Cross-Docked Data Set for Structure-Based Drug Design** (Dataset citation)
+PG Francoeur, T Masuda, J Sunseri, A Jia, RB Iovanisci, I Snyder, DR Koes. *J. Chem. Inf. Model*, 2020  
+[link](https://pubs.acs.org/doi/abs/10.1021/acs.jcim.0c00411) [PubMed](https://pubmed.ncbi.nlm.nih.gov/32865404/) [Chemrxiv](https://chemrxiv.org/articles/preprint/3D_Convolutional_Neural_Networks_and_a_CrossDocked_Dataset_for_Structure-Based_Drug_Design/11833323/1)
 
 **Ligand pose optimization with atomic grid-based convolutional neural networks**  
 M Ragoza, L Turner, DR Koes. *Machine Learning for Molecules and Materials NIPS 2017 Workshop*, 2017  
@@ -33,13 +50,7 @@ J Hochuli, A Helbling, T Skaist, M Ragoza, DR Koes.  *Journal of Molecular Graph
 J Sunseri, JE King, PG Francoeur, DR Koes.  *Journal of computer-aided molecular design*, 2018  
 [link](https://link.springer.com/article/10.1007/s10822-018-0133-y) [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/29992528)
 
-**Three-Dimensional Convolutional Neural Networks and a Cross-Docked Data Set for Structure-Based Drug Design**  
-PG Francoeur, T Masuda, J Sunseri, A Jia, RB Iovanisci, I Snyder, DR Koes. *J. Chem. Inf. Model*, 2020  
-[link](https://pubs.acs.org/doi/abs/10.1021/acs.jcim.0c00411) [PubMed](https://pubmed.ncbi.nlm.nih.gov/32865404/) [Chemrxiv](https://chemrxiv.org/articles/preprint/3D_Convolutional_Neural_Networks_and_a_CrossDocked_Dataset_for_Structure-Based_Drug_Design/11833323/1)
 
-**Virtual Screening with Gnina 1.0**
-J Sunseri, DR Koes D. *Molecules*, 2021
-[link](https://www.mdpi.com/1420-3049/26/23/7369) [Preprints](https://www.preprints.org/manuscript/202111.0329/v1)
 
 Docker
 ======
@@ -49,7 +60,7 @@ A pre-built docker image is available [here](https://hub.docker.com/u/gnina) and
 Installation
 ============
 
-We recommend that you use the [pre-built binary](https://github.com/gnina/gnina/releases/latest) unless you have significant experience building software on Linux, in which case building from source might result in an executable more optimized for your system.
+We recommend that you use the [pre-built binary](https://github.com/gnina/gnina/releases/latest) unless you have significant experience building software on Linux, in which case building from source *might* result in an executable more optimized for your system.  The pre-built binary can be used in WSL.
 
 ### Ubuntu 22.04
 ```
@@ -59,12 +70,11 @@ apt-get  install build-essential git cmake wget libboost-all-dev libeigen3-dev l
 
 [Follow NVIDIA's instructions](http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4TWipdwX1) to install the latest version of CUDA (>= 12.0 is required). **Make sure `nvcc` is in your PATH.**
 
-*Optionally* install [cuDNN](https://developer.nvidia.com/rdp/cudnn-archive).
 
 #
 Install OpenBabel3.  Note there are errors in bond order determination in version 3.1.1 and older.
 ```
-git clone https://github.com/openbabel/openbabel.git
+git clone https://github.com/dkoes/openbabel.git
 cd openbabel
 mkdir build
 cd build
@@ -80,7 +90,7 @@ git clone https://github.com/gnina/gnina.git
 cd gnina
 mkdir build
 cd build
-cmake ..
+cmake ..  # -DUSE_SYSTEM_NVTX=1 may be needed with pytorch 2.7.0 and CUDA 12.9
 make
 make install
 ```
@@ -199,7 +209,8 @@ Search space (required):
   --size_x arg                       size in the X dimension (Angstroms)
   --size_y arg                       size in the Y dimension (Angstroms)
   --size_z arg                       size in the Z dimension (Angstroms)
-  --autobox_ligand arg               Ligand to use for autobox
+  --autobox_ligand arg               Ligand to use for autobox. A multi-ligand 
+                                     file still only defines a single box.
   --autobox_add arg                  Amount of buffer space to add to 
                                      auto-generated box (default +4 on all six 
                                      sides)
@@ -340,9 +351,6 @@ Convolutional neural net (CNN) scoring:
   --cnn_mix_emp_energy               Merge CNN and empirical energy
   --cnn_empirical_weight arg (=1)    Weight for scaling and merging empirical 
                                      force and energy 
-  --cnn_outputdx                     Dump .dx files of atom grid gradient.
-  --cnn_outputxyz                    Dump .xyz files of atom gradient.
-  --cnn_xyzprefix arg (=gradient)    Prefix for atom gradient .xyz files
   --cnn_center_x arg                 X coordinate of the CNN center
   --cnn_center_y arg                 Y coordinate of the CNN center
   --cnn_center_z arg                 Z coordinate of the CNN center
@@ -390,6 +398,7 @@ Information (optional):
   --help                             display usage summary
   --help_hidden                      display usage summary with hidden options
   --version                          display program version
+
 ```
 
 CNN Scoring

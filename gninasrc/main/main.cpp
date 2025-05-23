@@ -932,7 +932,7 @@ Thank you!\n";
                                                                         "size in the X dimension (Angstroms)")(
         "size_y", value<fl>(&size_y), "size in the Y dimension (Angstroms)")("size_z", value<fl>(&size_z),
                                                                              "size in the Z dimension (Angstroms)")(
-        "autobox_ligand", value<std::string>(&autobox_ligand), "Ligand to use for autobox")(
+        "autobox_ligand", value<std::string>(&autobox_ligand), "Ligand to use for autobox. A multi-ligand file still only defines a single box.")(
         "autobox_add", value<fl>(&autobox_add),
         "Amount of buffer space to add to auto-generated box (default +4 on all six sides)")(
         "autobox_extend", value<bool>(&autobox_extend)->default_value(true),
@@ -1033,10 +1033,6 @@ Thank you!\n";
          "Merge CNN and empirical energy") //
         ("cnn_empirical_weight", value<fl>(&cnnopts.empirical_weight)->default_value(1.0),
          "Weight for scaling and merging empirical force and energy ")                            //
-        ("cnn_outputdx", bool_switch(&cnnopts.outputdx), "Dump .dx files of atom grid gradient.") //
-        ("cnn_outputxyz", bool_switch(&cnnopts.outputxyz), "Dump .xyz files of atom gradient.")   //
-        ("cnn_xyzprefix", value<std::string>(&cnnopts.xyzprefix)->default_value("gradient"),
-         "Prefix for atom gradient .xyz files") //
         ("cnn_center_x", value<fl>(&cnnopts.cnn_center[0]),
          "X coordinate of the CNN center")                                                    //
         ("cnn_center_y", value<fl>(&cnnopts.cnn_center[1]), "Y coordinate of the CNN center") //
@@ -1056,7 +1052,7 @@ Thank you!\n";
                                                                       "Suppress output messages")(
         "addH", value<bool>(&add_hydrogens), "automatically add hydrogens in ligands (on by default)")(
         "stripH", value<bool>(&strip_hydrogens),
-        "remove hydrogens from molecule _after_ performing atom typing for efficiency (off by default)")(
+        "remove polar hydrogens from molecule _after_ performing atom typing for efficiency (off by default - nonpolar are always removed)")(
         "device", value<int>(&settings.device)->default_value(0),
         "GPU device to use")("no_gpu", bool_switch(&settings.no_gpu), "Disable GPU acceleration, even if available.");
 

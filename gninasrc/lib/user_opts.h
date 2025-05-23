@@ -44,21 +44,17 @@ struct cnn_options {
     cnn_scoring_level cnn_scoring;
     double subgrid_dim;
     fl empirical_weight; //weight for scaling and merging potentials
-    bool outputdx;
-    bool outputxyz;
     bool gradient_check;
     bool mix_emp_force;//merge empirical and CNN minus forces
     bool mix_emp_energy;//merge empirical and CNN energy
     bool verbose;
 
-    std::string xyzprefix;
     unsigned seed; //random seed
 
     cnn_options()
         : cnn_center(NAN, NAN, NAN),
             cnn_rotations(0), cnn_scoring(CNNrescore),
-            subgrid_dim(0.0), outputdx(false),
-            outputxyz(false), gradient_check(false), 
+            subgrid_dim(0.0), gradient_check(false), 
             verbose(false), mix_emp_force(false),mix_emp_energy(false),empirical_weight(1.0),seed(0) {
     }
 };

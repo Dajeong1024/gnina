@@ -16,10 +16,11 @@ RUN pip3 install torch torchvision torchaudio mkl-static mkl-include
 #select version of cuda here
 RUN rm /usr/local/cuda && ln -s /usr/local/cuda-12.0 /usr/local/cuda
 
-RUN git clone https://github.com/openbabel/openbabel.git && cd openbabel && mkdir build && cd build && cmake  -DBUILD_SHARED=OFF -DWITH_MAEPARSER=OFF -DWITH_COORDGEN=OFF -DPYTHON_BINDINGS=OFF -DRUN_SWIG=OFF .. && make -j4 && make install
+RUN git clone https://github.com/dkoes/openbabel.git && cd openbabel && mkdir build && cd build && cmake  -DBUILD_SHARED=OFF -DWITH_MAEPARSER=OFF -DWITH_COORDGEN=OFF -DPYTHON_BINDINGS=OFF -DRUN_SWIG=OFF .. && make -j4 && make install
 
 RUN git clone https://github.com/intel/mkl-dnn.git && cd mkl-dnn && git checkout v3.5.3 && mkdir build && cd build && cmake ..  -DDNNL_LIBRARY_TYPE=STATIC && make -j4 && make install
 
+# with pytorch 2.7 build of nccl fails - expect to be pip installed  -DUSE_SYSTEM_NCCL=1 ?
 ENV TORCH_CUDA_ARCH_LIST="6.0;7.0;7.5;8.0;8.6;9.0"
 RUN git clone https://github.com/pytorch/pytorch.git && cd pytorch && git checkout v2.4.1 && git submodule sync && git submodule update --init --recursive  && mkdir build && cd build && cmake .. -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda -DCMAKE_CUDA_ARCHITECTURES="60;61;70;75;80;90" -DUSE_STATIC_MKL=ON -DUSE_MKLDNN=ON -DBLAS=OpenBLAS -DBUILD_SHARED_LIBS=OFF -DBUILD_PYTHON=OFF -DCAFFE2_STATIC_LINK_CUDA=ON -DUSE_TENSORPIPE=OFF -DUSE_STATIC_NCCL=ON -DUSE_STATIC_CUDNN=ON -DUSE_MPI=OFF -DTORCH_CUDA_ARCH_LIST="${TORCH_CUDA_ARCH_LIST}" && make -j4 && make install
 

@@ -161,7 +161,7 @@ float CNNTorchScorer<isCUDA>::score(model &m, bool compute_gradient, float &affi
         }
       }
 
-      if (compute_gradient || cnnopts.outputxyz) {
+      if (compute_gradient) {
 
         // Get gradient from mgrid into CNNScorer::gradient
         getGradient(model, gradient);

@@ -122,6 +122,9 @@ void MolGetter::create_init_model(const std::string &rigid_name, const std::stri
         finfo.extract_residue(rec, covr, covres, true);
         covatom = cinfo.find_rec_atom(covres);
 
+        if (!covatom) {
+          throw usage_error("Lost receptor atom " + cinfo.rec_atom_string() + " when constructing flexible residue (this should not happen).");
+        }
         VINA_CHECK(covatom);
         if (covatom->GetHvyDegree() == 0) {
           throw usage_error("Invalid solitary receptor atom " + cinfo.rec_atom_string() + ". Check bond lengths.");
@@ -453,6 +456,11 @@ bool MolGetter::readMoleculeIntoModel(model &m) {
         std::string name = mol.GetTitle();
         mol.StripSalts();
         m.set_name(name);
+
+	if(mol.NumAtoms() == 0) {
+          std::cerr << "\nEmpty molecule " << mol.GetTitle() << ". No output will be generated for the molecule.\n";
+          continue; 
+	}
         try {
           parsing_struct p;
           context c;
